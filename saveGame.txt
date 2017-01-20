@@ -1,0 +1,4 @@
+playerName: 'pootis'
+room: [4, 5]
+inventory: []
+sanity: 100
