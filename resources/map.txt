@@ -1,7 +1,7 @@
-  FrontDoor
-  LockedDoor2  Hallway Hallway BadRoom
-      Hallway
-      DarkRoom  Hallway Hallway Lootway
-    BadChoice   LockedDoor1 
-    ChoiceRoom  Hallway Hallway Hallway
-    GoodChoice    LootDirty
+#Front_Door######
+#Locked_Door2#Hallway#Hallway#Bad_Room###
+###Hallway####
+###Dark_Room#Hallway#Hallway#Lootway#
+##Bad_Choice###Locked_Door1##
+##Choice_Room#Hallway#Hallway#Hallway##
+##Good_Choice###Loot_Dirty##

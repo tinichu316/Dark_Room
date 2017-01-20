@@ -25,8 +25,45 @@ class Item():
     def __str__(self):
         return "%s." %(self.name)
     
+    def examine(self):
+        return "%s: %s" %(self.name, self.description)
+    
     def useByPlayer(self, player):
         return "You can't do that."
+    
+#===============================================================================    
+
+    
+class Key1(Item):
+    def __init__(self):
+        self.keyType = 1
+        super().__init__(index = 3,
+                         name = "A rusty brass key",
+                         description = "An old key that's almost rusted away.", 
+                         sanity = 5)
+        
+    def useByPlayer(self, player, target): #target will be the room that we are in
+        if self.keyType == target.doorType and target.isLocked:
+            target.unlock()
+            return "Door unlocked!"
+        else:
+            return "You can't use that here!"
+        
+class Key2(Item):
+    def __init__(self):
+        self.keyType = 2
+        super().__init__(index = 4,
+                         name = "A rusty golden key",
+                         description = "An old key that's almost rusted away.", 
+                         sanity = 10)
+        
+    def useByPlayer(self, player, target): #target will be the room that we are in
+        if self.keyType == target.doorType and target.isLocked:
+            target.unlock()
+            return "Door unlocked!"
+        else:
+            return "You can't use that here!"
+        
     
 
 
@@ -62,12 +99,13 @@ class Trinket(Item):
         
 
 
-#for items in this script, initialize them
-#just have to put all the items here:
-#It's ugly but it works
-items = [IntroNote(playerName), Trinket()] 
-for obj in items:
-    obj.__addToList__()
-    
+def updateInventory():
+    #for items in this script, initialize them
+    #just have to put all the items here:
+    #It's ugly but it works
+    items = [IntroNote(playerName), Trinket()] 
+    for obj in items:
+        obj.__addToList__()
+        
 
 

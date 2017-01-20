@@ -1,5 +1,8 @@
 import os.path as path #use lexists
 import player
+#could, instead of saving the items as binary bits, simply save the item as it's array. aka player.inventory and just load that in.
+
+
 
 # write objects and locations with capitals
 
