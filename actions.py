@@ -1,4 +1,5 @@
-import player
+from player import Player
+player = Player()
 
 
 class Action():
@@ -42,26 +43,35 @@ class ViewInventory(Action):
     #prints the player's inventory
     def __init__(self):
         super().__init__(method = player.printInventory,
-                         name = "View Inventory",
+                         name = "View inventory",
                          hotkey = "i"
                          )
+
+class PickupItem(Action):
+    def __init__(self, item):
+        super().__init__(method = player.pickup,
+                         name = "Pickup something",
+                         hotkey = "p",
+                         item = item
+                         )
+
 
 class ViewSanity(Action):
     def __init__(self):
         super().__init__(method = player.printSanity,
-                         name = "Check Sanity",
+                         name = "Check sanity",
                          hotkey = "q"
                          )
 
 class CallHelp(Action):
     def __init__(self):
         super().__init__(method = player.callHelp,
-                         name = "Call for Help",
+                         name = "Call for help",
                          hotkey = "h"
                          )
 
 class UseItem(Action):
-    def __init__(self):
+    def __init__(self, item = None):
         super().__init__(method = player.useItem,
                          name = "Use an item",
                          hotkey = "u",
@@ -69,10 +79,11 @@ class UseItem(Action):
                          ) #this action will have to passed an arg
 
 class UseItemTarget(Action):
-    def __init__(self):
+    def __init__(self, item, target):
         super().__init__(method = player.useItemTarget,
                          name = "Use an item with something",
                          hotkey = "uw",
                          item = item,
-                         target = target
-                         ) #this action will have to passed an arg
+                         target = player.location,
+                         doorCheck = target #uw ___ (doorcheck)
+                         ) #this action will have to passed 2 args
