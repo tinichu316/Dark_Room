@@ -9,7 +9,7 @@ def displaySanity(percent):
     responses = {0: " are about to die.", 
                  1: "r heart is beating like crazy.", 
                  2: " begin to see hallucinations.", 
-                 3: " feel increasingly dizzy.", 
+                 3: " feel increasingly dizzy.",
                  4: " have a slight headache.", 
                  5: " feel just fine."}
     if percent <= 100:
@@ -35,20 +35,58 @@ class Player():
         
     def isAlive(self):
         return self.sanity > 0
-        
+
+    def doAction(self, action, **kwargs):
+        #finds the method 'action' in this class.
+        actionMethod = getattr(self, action.method.__name__)
+        #if found, it runs the method with any additional keywords.
+        if actionMethod:
+            actionMethod(**kwargs)
         
     def printInventory(self):
         for i in range(len(self.inventory)):
             if self.inventory[i]: #if the item is there
                 print(items.allItems[i])
-                
+
+    def printSanity(self):
+        displaySanity(self.sanity)
+
+    #movement commands
+    def move(self, dx, dy):
+        self.locationX += dx
+        self.locationY += dy
+        print(world.tileExists(self.locationX, self.locationY).introText())
+
+    def move_north(self):
+        self.move(0,-1)
+    def move_south(self):
+        self.move(0, 1)
+    def move_east(self):
+        self.move(1, 0)
+    def move_west(self):
+        self.move(-1, 0)
+
+
     def useItem(self, item):
         index = items.allItems.index(item)
         if self.inventory[index]: #if the player has the item
-            print(items.allItems[index].useByPlayer())
+            print(items.allItems[index].useByPlayer(self))
         else:
             print("There is no such item %s." %item)
-            
+
+    def useItemTarget(self, item, target):
+        index = items.allItems.index(item)
+        self.target = target
+        if self.inventory[index]: #if the player has the item
+            print(items.allItems[index].useByPlayerTarget(self, self.target))
+            if item.keyType == target.doorType:
+                target.unlock()
+            else:
+                print("That key doesn't fit here.")
+        else:
+            print("There is no such item %s." %item)
+
+
     def callHelp(self):
         luck = random.randrange(10)
         if luck < 4:

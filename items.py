@@ -1,12 +1,12 @@
-playerName = "PLACEHOLDER" #until i can figure out how to import without importing before the player enters their name
+playerName = "PLACEHOLDER" # until i can figure out how to import without importing before the player enters their name
 
-allItems = [] #holds all the items.. only adds them the first time they are called though
-#does not add items if you just call the item with the appropriate parameter.. works if you print the item though.
+allItems = []  # holds all the items.. only adds them the first time they are called though
+# does not add items if you just call the item with the appropriate parameter.. works if you print the item though.
 totalItemNo = 2
 
 class Item():
-    #base class for all items
-    #index is the index in the save file
+    # base class for all items
+    # index is the index in the save file
     def __init__(self, index, name, description, sanity): 
         self.index = index
         self.name = name
@@ -14,11 +14,11 @@ class Item():
         self.sanity = sanity
 
     def __addToList__(self):
-        #adds the item to the masterlist
+        # adds the item to the masterlist
         i = 0
-        while i < totalItemNo: #number of items that we have
-            if len(allItems) == self.index: #adds the items by their index in order
-                #add to the list
+        while i < totalItemNo: # number of items that we have
+            if len(allItems) == self.index:  # adds the items by their index in order
+                # add to the list
                 allItems.append(self)
             i += 1
     
@@ -27,7 +27,8 @@ class Item():
     
     def examine(self):
         return "%s: %s" %(self.name, self.description)
-    
+
+    #general case. if the item can be used, define it specifically.
     def useByPlayer(self, player):
         return "You can't do that."
     
@@ -42,7 +43,7 @@ class Key1(Item):
                          description = "An old key that's almost rusted away.", 
                          sanity = 5)
         
-    def useByPlayer(self, player, target): #target will be the room that we are in
+    def useByPlayerTarget(self, player, target): #target will be the room that we are in
         if self.keyType == target.doorType and target.isLocked:
             target.unlock()
             return "Door unlocked!"
@@ -87,15 +88,16 @@ class Trinket(Item):
     def __init__(self):
         #in the parent (super) to initialize the item with these arguments
         self.sanityAmt = 20
+        self.isFirstTime = True
         super().__init__(index = 1,
                          name = "Trinket", 
                          description = "A sentimental token that reminds you of home.",
                          sanity = self.sanityAmt)
         
     def useByPlayer(self, player):
-        if isFirstTime:
+        if self.isFirstTime:
             player.sanity += self.sanityAmt
-            isFirstTime = False
+            self.isFirstTime = False
         
 
 

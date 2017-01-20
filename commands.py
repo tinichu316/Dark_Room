@@ -1,4 +1,4 @@
-#store needed commands here
+# store needed commands here
 # examine/x
 # take/grab
 # go/g

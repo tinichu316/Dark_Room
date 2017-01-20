@@ -20,5 +20,5 @@ def loadTiles():
             #getattr goes into the tiles.py file and finds a file with the name equal to that on the txt file
             _world[(x,y)] = None if tileName == '' else getattr(__import__("tiles"), tileName)(x, y)
             
-def tile_exists(x, y):
+def tileExists(x, y):
     return _world.get((x, y))

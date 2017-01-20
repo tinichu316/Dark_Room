@@ -1,4 +1,4 @@
-import items
+import items, actions, world
 
 
 #non specific types of rooms (more than 1 exist)
@@ -12,6 +12,30 @@ class MapTile():
     
     def modifyPlayer(self, player):
         raise NotImplementedError()
+
+    def adjacentMoves(self):
+        # returns possible move actions
+        #maybe add locked door blocking here?
+        possibleMoves = []
+        if world.tileExists(self.x + 1, self.y):
+            possibleMoves.append(actions.MoveEast())
+        if world.tileExists(self.x + 1, self.y):
+            possibleMoves.append(actions.MoveEast())
+        if world.tileExists(self.x + 1, self.y):
+            possibleMoves.append(actions.MoveEast())
+        if world.tileExists(self.x + 1, self.y):
+            possibleMoves.append(actions.MoveEast())
+        return possibleMoves
+
+    def availableActions(self):
+        moves = self.adjacentMoves(self)
+        #list the possible extra moves. Doesn't list use but you can always try that.
+        list = [actions.ViewInventory(),
+                actions.CallHelp(),
+                actions.ViewSanity()]
+        moves.extend(list)
+        return moves
+
     
 
 class LootRoom(MapTile):
