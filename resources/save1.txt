@@ -1,0 +1,4 @@
+playerName: ''
+room: [3, 2]
+inventory: [1]
+sanity: 100

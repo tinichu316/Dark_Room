@@ -6,6 +6,7 @@ class MapTile():
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.doorType = 0
         
     def introText(self):
         raise NotImplementedError() # we don't want to actually create anything called a maptile so we have to override these methods in any of our other classes
@@ -14,7 +15,7 @@ class MapTile():
         raise NotImplementedError()
 
     def adjacentMoves(self):
-        # returns possible move actions
+        # returns possible move actions and prints it to the user
         #maybe add locked door blocking here?
         possibleMoves = []
         if world.tileExists(self.x + 1, self.y):
@@ -33,7 +34,9 @@ class MapTile():
         list = [actions.ViewInventory(),
                 actions.CallHelp(),
                 actions.ViewSanity(),
-                actions.UseItem()]
+                actions.UseItem(None),
+                actions.UseItemTarget(None, None),
+                actions.PickupItem(None)]
         moves.extend(list)
         return moves
 
@@ -47,23 +50,9 @@ class LootRoom(MapTile):
     def pickup(self, player):
         index = items.allItems.index(self.item)
         player.inventory[index] = 1
-        items.updateInventory()
 
-    def availableActions(self):
-        #overrides the default method in the base tile class
-        moves = self.adjacentMoves(self)
-        list = [actions.ViewInventory(),
-                actions.CallHelp(),
-                actions.ViewSanity(),
-                actions.PickupItem()]
-        moves.extend(list)
-        return moves
-
-        
-        
-    #idk if we need this next part...
-    #def modifyPlayer(self, player):
-    #    pass
+    def modifyPlayer(self, player):
+        pass
 
 
 #this type of room, like the two above it, need to be passed an x and y coordinate of a specific locked room
@@ -78,17 +67,15 @@ class LockedRoom(MapTile):
         #unlocks the door
         self.isLocked = False
 
+    def modifyPlayer(self, player):
+        pass
+
+
 #===============================================================================
 #specific rooms 
 class Dark_Room(MapTile):
     def introText(self): #triple quotes span multiple lines
-        isFirstTime = True
-        if isFirstTime:
-            ifFirstTime = False
-            return """You wake up to a slightly humid but otherwise dark room.\n
-                   The draft coming in from the North and East indicates a narrow passageway."""
-        else:
-            return "You walk back into the familiar dark room."
+            return "The room smells like dust and mildew."
     
     def modifyPlayer(self, player):
         # Room does nothing
@@ -166,7 +153,7 @@ class Locked_Door2(LockedRoom):
 
     def introText(self):
         if self.isLocked:
-            return "A locked door stands to the West. This one has a gold handle."
+            return "A locked door stands to the North. This one has a gold handle."
         else:
             return "A once locked door with a gold handle decorates the room."
 
@@ -174,21 +161,23 @@ class Locked_Door2(LockedRoom):
         possibleMoves = []
         if world.tileExists(self.x + 1, self.y):
             possibleMoves.append(actions.MoveEast())
-        if world.tileExists(self.x - 1, self.y) and not self.isLocked:
+        if world.tileExists(self.x - 1, self.y):
             possibleMoves.append(actions.MoveWest())
-        if world.tileExists(self.x, self.y - 1):
-            possibleMoves.append(actions.MoveNoth())
+        if world.tileExists(self.x, self.y - 1) and not self.isLocked:
+            possibleMoves.append(actions.MoveNorth())
         if world.tileExists(self.x, self.y + 1):
             possibleMoves.append(actions.MoveSouth())
         return possibleMoves
 
     def availableActions(self):
-        moves = self.adjacentMoves(self)
+        moves = self.adjacentMoves()
         list = [actions.ViewInventory(),
                 actions.CallHelp(),
                 actions.ViewSanity()]
         moves.extend(list)
         return moves
+
+
 
 class Locked_Door1(LockedRoom):
     def __init__(self, x, y):
@@ -207,13 +196,13 @@ class Locked_Door1(LockedRoom):
         if world.tileExists(self.x - 1, self.y):
             possibleMoves.append(actions.MoveWest())
         if world.tileExists(self.x, self.y - 1):
-            possibleMoves.append(actions.MoveNoth())
+            possibleMoves.append(actions.MoveNorth())
         if world.tileExists(self.x, self.y + 1) and not self.isLocked:
             possibleMoves.append(actions.MoveSouth())
         return possibleMoves
 
     def availableActions(self):
-        moves = self.adjacentMoves(self)
+        moves = self.adjacentMoves()
         list = [actions.ViewInventory(),
                 actions.CallHelp(),
                 actions.ViewSanity()]
@@ -231,8 +220,8 @@ class Bad_Room(LootRoom):
         super().__init__(x, y, items.Key1())
     def introText(self):
         return """
-It smells like death and decay in here.\n
-You quickly turn around to leave when you spot something shiny.\n
+It smells like death and decay in here.
+You quickly turn around to leave when you spot something shiny.
 It appears to be a key.
         """
     #can use Bad_Room.pickup(player) to pickup the key1

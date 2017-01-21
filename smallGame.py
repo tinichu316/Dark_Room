@@ -2,24 +2,12 @@ import os.path as path #use lexists
 import player
 #could, instead of saving the items as binary bits, simply save the item as it's array. aka player.inventory and just load that in.
 
-
-
-# write objects and locations with capitals
-
-#ITEM = (index)
-KEY = 0
-#LOCATION = (room number) (x,y coordinates. e.g. Dark Room would be (45)
-DARK_ROOM = 0
-HALLWAY = 1
-FRONT_DOOR = 2
-
 # save information as a text file
-fileName = "saveGame.txt"
+fileName = "resources/saveGame.txt"
 
 #default values:
 #only updates when the file is saved.
 data = player.data
-#data = {"playerName" : "", "room" : [4,5], "inventory" : [], "sanity" : 100} #  store inventory in binary
 
 def loadGameFile(fileName):
     if path.lexists(fileName):

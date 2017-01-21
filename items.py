@@ -21,7 +21,7 @@ class Item():
     #             allItems.append(self)
     
     def __str__(self):
-        return "%s: %s." %(self.name, self.description)
+        return "%s: %s" %(self.name, self.description)
 
     #general case. if the item can be used, define it specifically.
     def useByPlayer(self, player):
@@ -85,7 +85,7 @@ class IntroNote(Item):
         if self.isFirstTime:
             player.sanity += self.sanityAmt
             self.isFirstTime = False
-            print("You eat the note. You feel worse. \nYour sanity has decreased.")
+            print("You touch the note and a chill goes up your spine. \nYour sanity has decreased.")
     
     
 class Trinket(Item):

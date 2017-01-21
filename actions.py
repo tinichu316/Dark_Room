@@ -51,7 +51,7 @@ class PickupItem(Action):
     def __init__(self, item):
         super().__init__(method = player.pickup,
                          name = "Pickup something",
-                         hotkey = "p",
+                         hotkey = "pickup", #should say p not pickup wtf
                          item = item
                          )
 
@@ -71,10 +71,10 @@ class CallHelp(Action):
                          )
 
 class UseItem(Action):
-    def __init__(self, item = None):
+    def __init__(self, item = ''):
         super().__init__(method = player.useItem,
                          name = "Use an item",
-                         hotkey = "u",
+                         hotkey = "use",
                          item = item
                          ) #this action will have to passed an arg
 
@@ -82,8 +82,23 @@ class UseItemTarget(Action):
     def __init__(self, item, target):
         super().__init__(method = player.useItemTarget,
                          name = "Use an item with something",
-                         hotkey = "uw",
+                         hotkey = "usewith",
                          item = item,
                          target = player.location,
                          doorCheck = target #uw ___ (doorcheck)
                          ) #this action will have to passed 2 args
+
+#class SaveGame(Action):
+    #def __init__(self):
+        #super().__init__(method = player.saveGame,
+                         #name = "Save the game",
+                         #hotkey = "save",
+                         #)
+
+#player shouldn't be able to load during the game
+#class LoadGame(Action):
+    #def __init__(self):
+        #super().__init__(method = player.loadGame,
+                         #name = "Loads a prior game",
+                         #hotkey = "load",
+                         #)
