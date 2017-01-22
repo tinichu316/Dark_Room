@@ -4,9 +4,12 @@ import items, actions, world
 #non specific types of rooms (more than 1 exist)
 class MapTile():
     def __init__(self, x, y):
+        #default stuff for every tile
         self.x = x
         self.y = y
         self.doorType = 0
+        self.isFirstTime = True
+        self.item = None
         
     def introText(self):
         raise NotImplementedError() # we don't want to actually create anything called a maptile so we have to override these methods in any of our other classes
@@ -30,7 +33,7 @@ class MapTile():
 
     def availableActions(self):
         moves = self.adjacentMoves()
-        #list the possible extra moves. Doesn't list use but you can always try that.
+        #list the possible extra moves aside from movement
         list = [actions.ViewInventory(),
                 actions.CallHelp(),
                 actions.ViewSanity(),
@@ -66,6 +69,7 @@ class LockedRoom(MapTile):
     def unlock(self):
         #unlocks the door
         self.isLocked = False
+        print("Click! The door unlocks!\n")
 
     def modifyPlayer(self, player):
         pass
@@ -75,16 +79,18 @@ class LockedRoom(MapTile):
 #specific rooms 
 class Dark_Room(MapTile):
     def introText(self): #triple quotes span multiple lines
-            return "The room smells like dust and mildew."
+            return "The dark room smells like dust and mildew.\n"
     
     def modifyPlayer(self, player):
         # Room does nothing
-        pass    
+        if self.isFirstTime:
+            player.inventory[0] = 1
+            self.isFirstTime = False
     
     
 class Hallway(MapTile):
     def introText(self): #triple quotes span multiple lines
-        return "You walk into the passageway."
+        return "You walk into the passageway.\n"
 
     def modifyPlayer(self, player):
         pass
@@ -92,30 +98,43 @@ class Hallway(MapTile):
     
 class Bad_Choice(MapTile):
     def introText(self):
-        return """
-A sense of dread overcomes you as you enter this room.\n
-Your legs feel heavy and your head grows dizzier.\n
-Your take lumbering steps before you crash to the ground.\n
-.\n
-..\n
-...\n
-You awake covered in slime and cockroaches.\n
+        if self.isFirstTime:
+            self.isFirstTime = False
+            return """
+A sense of dread overcomes you as you enter this room.
+Your legs feel heavy and your head grows dizzier.
+Your take lumbering steps before you crash to the ground.
+    ___________________________________________
+   |\\'-._(   /                                 |
+   | \  .'-._\                            ,   ,|
+   |-.\\'    .-;                         .'\`-' |
+   |   \  .' (                       _.'   \   |
+   |.--.\\'   _)                   ;-;       \._|
+   |    ` _\(_)/_                  \ `'-,_,-'\ |
+   |______ /(O)\  _________________/____)_`-._\|
+
+
+You awake covered in slime and cockroaches.
 Your sanity has taken a large hit.
-"""
+    """
+        else:
+            return """
+Terrible memories haunt you here. You feel worse.\n
+            """
     
     def modifyPlayer(self, player):
-        player.sanity -= 40
-        #displaySanity()
+        if self.isFirstTime:
+            player.sanity -= 40
+            player.printSanity()
+        else:
+            player.sanity -= 10
+            player.printSanity()
         
         
 class Front_Door(MapTile):
     def introText(self): # can add different endings depending on sanity
-        return """You stumble against the wooden door.\n
-You reach to turn the handle as the voices get nearer.\n
-
-
-You feel the outside wind, the pale moon hitting your skin.\n
-You have escaped.\n
+        return """
+        YOU WIN
         """
     
     def modifyPlayer(self, player):
@@ -124,8 +143,8 @@ You have escaped.\n
 class Choice_Room(MapTile):
     def introText(self):
         return """
-You enter a room split into North and South directions.\n
-You have a feeling you will need to go into one room,\n
+You enter a room split into North and South directions.
+You have a feeling you will need to go into one room,
 but you also sense that the other room will lead to harm.
 """
     
@@ -134,15 +153,26 @@ but you also sense that the other room will lead to harm.
     
 class Loot_Dirty(MapTile):
     def introText(self):
-        return """
-As you enter, a strong scent of cinnamon and pumpkin spice hits you.\n
-You see a gorgeous looking latte and you can't help but devour it.\n
+        if self.isFirstTime:
+            self.isFirstTime = False
+            return """
+As you enter, a strong scent of cinnamon and pumpkin spice hits you.
+            ( (
+             ) )
+          ........
+          |      |]
+          \      /
+           `----'
+You see a gorgeous looking latte and you can't help but devour it.
 You feel better after that.
         """
+        else:
+            return """Without the latte the room looks less appealing.
+            """
     def modifyPlayer(self, player):
-        player.sanity += 20
-        #displaySanity()
-
+        if self.isFirstTime:
+            player.sanity += 10
+            player.printSanity()
     
     
     
@@ -150,12 +180,27 @@ You feel better after that.
 class Locked_Door2(LockedRoom):
     def __init__(self, x, y):
         super().__init__(x, y, True, 2)
+        self.doorType = 2
 
     def introText(self):
         if self.isLocked:
-            return "A locked door stands to the North. This one has a gold handle."
+            return """A locked door stands to the North. This one has a gold handle.\n
+            __________
+           |  __  __  |
+           | |  ||  | |
+           | |  ||  | |
+           | |__||__| |
+           |  __  __ @|
+           | |  ||  | |
+           | |  ||  | |
+           | |  ||  | |
+           | |  ||  | |
+           | |__||__| |
+           |__________|
+
+            """
         else:
-            return "A once locked door with a gold handle decorates the room."
+            return "A now open door with a gold handle decorates the room.\nA passage opens to the North.\n"
 
     def adjacentMoves(self):
         possibleMoves = []
@@ -173,7 +218,10 @@ class Locked_Door2(LockedRoom):
         moves = self.adjacentMoves()
         list = [actions.ViewInventory(),
                 actions.CallHelp(),
-                actions.ViewSanity()]
+                actions.ViewSanity(),
+                actions.UseItem(None),
+                actions.UseItemTarget(None, None),
+                actions.PickupItem(None)]
         moves.extend(list)
         return moves
 
@@ -182,12 +230,27 @@ class Locked_Door2(LockedRoom):
 class Locked_Door1(LockedRoom):
     def __init__(self, x, y):
         super().__init__(x, y, True, 1)
+        self.doorType = 1
 
     def introText(self):
         if self.isLocked:
-            return "A locked door stands to the South. This one has a brass handle."
+            return """A locked door stands to the South. This one has a brass handle.\n
+            __________
+           |  __  __  |
+           | |  ||  | |
+           | |  ||  | |
+           | |__||__| |
+           |  __  __ O|
+           | |  ||  | |
+           | |  ||  | |
+           | |  ||  | |
+           | |  ||  | |
+           | |__||__| |
+           |__________|
+
+            """
         else:
-            return "A once locked door with a brass handle decorates the room."
+            return "A now open door with a brass handle decorates the room.\nA passage opens to the South.\n"
 
     def adjacentMoves(self):
         possibleMoves = []
@@ -205,44 +268,67 @@ class Locked_Door1(LockedRoom):
         moves = self.adjacentMoves()
         list = [actions.ViewInventory(),
                 actions.CallHelp(),
-                actions.ViewSanity()]
+                actions.ViewSanity(),
+                actions.UseItem(None),
+                actions.UseItemTarget(None, None),
+                actions.PickupItem(None)]
         moves.extend(list)
         return moves
 
-
-    
-    
-    
     
 
 class Bad_Room(LootRoom):
     def __init__(self, x, y):
         super().__init__(x, y, items.Key1())
+        self.item = items.Key1() #somehow room has no self.item
     def introText(self):
-        return """
-It smells like death and decay in here.
+        if self.item:
+            return """It smells like death and decay in here.
+Your head grows foggier the longer you stay.\n
 You quickly turn around to leave when you spot something shiny.
-It appears to be a key.
-        """
-    #can use Bad_Room.pickup(player) to pickup the key1
-      
+           __
+          /O \_____
+          \__/-="="`
+
+It appears to be a brass key.
+            """
+        else:
+            return"""It smells like death and decay in here.
+Your head grows foggier the longer you stay.\n
+There's nothing left in this room.
+            """
+    def modifyPlayer(self, player):
+        player.sanity -= 10
+
     
 class Lootway(LootRoom):
     def __init__(self, x, y):
         super().__init__(x, y, items.Trinket())
+        self.item = items.Trinket()
     def introText(self):
-        return """
-At the end of this hallway you spot a small item.\n
+        if self.item:
+            return """At the end of this hallway you spot a small item.
 Upon closer inspection, it appears to be a trinket.
-        """
-    #can use Lootway.pickup(player)
-    
+            """
+        else:
+            return"""You stand in an empty hallway.
+            """
+
 class Good_Choice(LootRoom):
     def __init__(self, x, y):
         super().__init__(x, y, items.Key2())
+        self.item = items.Key2()
     def introText(self):
-        return """
+        if self.item:
+            return """
 You appear unharmed.\n
+           __
+          /@ \_____
+          \__/-="="`
+
 You notice in the corner a small golden key.
         """
-    #can use Good_Choice.pickup(player)
+        else:
+            return"""
+Without the golden key, the room looks wholly empty.
+            """

@@ -1,4 +1,4 @@
-playerName: ''
-room: [3, 2]
-inventory: [1]
-sanity: 100
+playerName: 'tony'
+room: [3, 3]
+inventory: [1, 0, 0, 0, 0]
+sanity: 76

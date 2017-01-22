@@ -36,8 +36,7 @@ def saveGameFile(fileName):
         f.write("sanity: %i\n" % data['sanity'])
         
 def inventoryContains(item):
-    foo = True if data['inventory'][item] == 1 else False
-    return foo
+    return data['inventory'][item] == 1
 
 #get's the player's name
 t1 = False

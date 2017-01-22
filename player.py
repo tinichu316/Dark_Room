@@ -5,6 +5,20 @@ fileName = "resources/save1.txt"
 
 data = {"playerName" : "", "room" : [3,3], "inventory" : [0]*items.totalItemNo, "sanity" : 100} # default info
 
+spookyQuotes = [
+"Flee, screaming.",
+"Give in, to your fear.",
+"Hope is an illusion.",
+"Caress your fear.",
+"You have already lost.",
+"Death... is close.",
+"You are already dead.",
+"Your courage will fail.",
+"You are weak.",
+"Your heart will explode.",
+"No one will remember you."
+]
+
 def displaySanity(percent):
     bar = ["-"]*20
     responses = {
@@ -26,7 +40,10 @@ def displaySanity(percent):
     health = "".join(bar)
     
     print("\nSanity: [" + health + "] (%s%%)        You%s" %(percent, responses[resp]))
+    
 
+    
+    
 class Player():
     # place commands here.
     def __init__(self):
@@ -36,8 +53,6 @@ class Player():
         self.sanity = data['sanity']
         self.victory = False
         self.inMenu = True
-        #gives the player the starting note
-        self.inventory[0] = 1
         
     def isAlive(self):
         return self.sanity > 0
@@ -46,7 +61,6 @@ class Player():
         #finds the method 'action' in this class.
         actionMethod = getattr(self, action.method.__name__)
         #if found, it runs the method with any additional keywords.
-        print("DEBUG KEYWORDS", kwargs)
         if actionMethod:
             if not kwargs: #if the dictionary is empty aka no extra parameters
                 actionMethod(**kwargs)
@@ -54,40 +68,60 @@ class Player():
                 actionMethod(kwargs)
 
     def pickup(self, item):
-        item = item['item']
-        if item == None:
+        whichItem = item['item']
+        currentRoom = world.tileExists(self.location[0], self.location[1])
+
+        # Turns out the object memory index is different but as long as the strings are the same
+        # aka they don't have the same name and description, we gucci.
+        if whichItem == None:
             print("You pickup nothing.")
-        #checks location..
-        elif item == "key" and self.location == [4,1]: #Bad Room
-            if self.inventory[3] == 0: #the item is not there
+        #checks location and if the current room has the item. if so, it removes it.
+        # limitations: room can only have one item or no items
+        elif whichItem == "key" and str(currentRoom.item) == str(items.Key1()):
+            if self.inventory[3] == 0: #the item is not already picked up
                 self.inventory[3] = 1
                 print("You picked up the key.")
+                #gain sanity for checkpoint pickups.
+                self.sanity += 5
+                self.printSanity()
+                currentRoom.item = None
             else:
                 print("You already picked up the key!")
-        elif item == "key" and self.location == [2,6]: #good choice
-            if self.inventory[4] == 0:  # the item is not there
+        elif whichItem == "key" and str(currentRoom.item) == str(items.Key2()): #good choice
+            if self.inventory[4] == 0:
                 self.inventory[4] = 1
-                print("You picked up the key.")                
+                print("You picked up the key.")
+                self.sanity += 5
+                self.printSanity()
+                currentRoom.item = None
             else:
                 print("You already picked up the key!")
-        elif item == "trinket" and self.location == [6,3]:
-            if self.inventory[1] == 0:  # the item is not there
+        elif whichItem == "trinket" and str(currentRoom.item) == str(items.Trinket()):
+            if self.inventory[1] == 0:
                 self.inventory[1] = 1
                 print("You feel calmer after placing the trinket in your hand.")
-                self.sanity += 20
+                self.sanity += 5
+                self.printSanity()
+                currentRoom.item = None
             else:
                 print("You already have the trinket!")
         else:
-            print("There's no %s to pickup." %item)
+            print("There's no %s to pickup." %whichItem)
         
     def printInventory(self):
         print("You find in your pockets...")
         for i in range(len(self.inventory)):
             if self.inventory[i]: #if the item is there
                 print(items.allItems[i])
+        print("")
 
     def printSanity(self):
         displaySanity(self.sanity)
+
+    def displaySpook(self):
+        # print some spooky words
+        luck = random.randrange(0, len(spookyQuotes), 1)
+        print("*%s*" %spookyQuotes[luck])
 
     #movement commands
     def move(self, dx, dy):
@@ -107,14 +141,19 @@ class Player():
         index = 10
         if item == "note":
             index = 0
-        if item == "trinket":
+        elif item == "trinket":
             index = 1
-        if item == "key":
-            index = 2 #the potato
-        if len(self.inventory) >= index and self.inventory[index]: #if the player has the item
-            print(items.allItems[index].useByPlayer(self))
+        # if it's a key, it will print invalid response
+        elif item == "key":
+            index = 3
+
+        if index == 10:
+            print("You don't have a %s.\n" %item)
+        elif self.inventory[index]: #if the player has the item and types in a valid name
+            items.allItems[index].useByPlayer(self)
+            self.printSanity()
         else:
-            print("There is no such %s." %item)
+            print("You don't have a %s.\n" %item)
 
     def useItemTarget(self, item):
         target = self.location
@@ -125,38 +164,39 @@ class Player():
         targetRoom = world.tileExists(target[0],target[1])
         if item == "key" and doorCheck == "door":
             keyType = 0 #1 is key 1, 2 is both keys
-            if len(self.inventory) == 4 and self.inventory[3] and self.inventory[4]:
+            if self.inventory[4]:
                 keyType = 2
-            elif len(self.inventory) == 3 and self.inventory[3]:
+            elif self.inventory[3]:
                 keyType = 1
             else:
-                print("You don't have a key!")
+                print("You don't have a key!\n")
 
             if targetRoom.doorType == 0:
-                print("There's no door here to unlock.")
+                print("There's no door here to unlock.\n")
             elif keyType == targetRoom.doorType or keyType == 2:
                 targetRoom.unlock()
+                self.sanity += 5
             else:
-                print("That key doesn't fit here.")
+                print("That key doesn't fit here.\n")
 
         elif doorCheck == "door":
-            print("I can't use %s on the door." %item)
+            print("I can't use %s on the door.\n" %item)
         elif item == "key":
-            print("How can I use a key with a %s?" %doorCheck)
+            print("How can I use a key with a %s?\n" %doorCheck)
         else:
-            print("I can't use a %s with a %s." %(item, doorCheck))
+            print("I can't use a %s with a %s.\n" %(item, doorCheck))
 
 
     def callHelp(self):
         luck = random.randrange(10)
         if luck < 4:
-            print("\nYou call for help and instead hear a eerie moan.\nYour sanity drops as a result.")
+            print("You call for help and instead hear a eerie moan.\nYour sanity drops as a result.")
             self.sanity -= 15
         elif luck < 8:
-            print("\nYou call for help, but no one answers.\nYour sanity dips as a result.")
+            print("You call for help, but no one answers.\nYour sanity dips as a result.")
             self.sanity -= 5
         else:
-            print("\nYou cry for help. \nThe sound of your own voice soothes you.\nYou gain some sanity.")
+            print("You cry for help. \nThe sound of your own voice soothes you.\nYou gain some sanity.")
             self.sanity += 10
         displaySanity(self.sanity)
 
@@ -169,7 +209,7 @@ class Player():
             f.write("room: %s\n" % self.location)
             f.write("inventory: %s\n" % self.inventory)
             f.write("sanity: %i\n" % self.sanity)
-        print("Game saved.")
+        print("Game saved.\n")
 
     def loadGame(self):
         if path.lexists(fileName):

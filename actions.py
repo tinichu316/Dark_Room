@@ -17,25 +17,25 @@ class Action():
 class MoveNorth(Action):
     def __init__(self):
         super().__init__(method = player.move_north,
-                         name = "Go North",
+                         name = "/\ Go North",
                          hotkey = "n",
                          )
 class MoveSouth(Action):
     def __init__(self):
         super().__init__(method = player.move_south,
-                         name = "Move South",
+                         name = "\/ Move South",
                          hotkey = "s",
                          )
 class MoveEast(Action):
     def __init__(self):
         super().__init__(method = player.move_east,
-                         name = "Walk East",
+                         name = ">> Walk East",
                          hotkey = "e",
                         )
 class MoveWest(Action):
     def __init__(self):
         super().__init__(method = player.move_west,
-                         name = "Travel West",
+                         name = "<< Travel West",
                          hotkey = "w",
                         )
 
@@ -51,7 +51,7 @@ class PickupItem(Action):
     def __init__(self, item):
         super().__init__(method = player.pickup,
                          name = "Pickup something",
-                         hotkey = "pickup", #should say p not pickup wtf
+                         hotkey = "pickup",
                          item = item
                          )
 
@@ -66,7 +66,7 @@ class ViewSanity(Action):
 class CallHelp(Action):
     def __init__(self):
         super().__init__(method = player.callHelp,
-                         name = "Call for help",
+                         name = "Help",
                          hotkey = "h"
                          )
 
@@ -81,24 +81,10 @@ class UseItem(Action):
 class UseItemTarget(Action):
     def __init__(self, item, target):
         super().__init__(method = player.useItemTarget,
-                         name = "Use an item with something",
+                         name = "Use something with something",
                          hotkey = "usewith",
                          item = item,
                          target = player.location,
-                         doorCheck = target #uw ___ (doorcheck)
+                         doorCheck = target #usewith [item] (sdoorcheck)
                          ) #this action will have to passed 2 args
 
-#class SaveGame(Action):
-    #def __init__(self):
-        #super().__init__(method = player.saveGame,
-                         #name = "Save the game",
-                         #hotkey = "save",
-                         #)
-
-#player shouldn't be able to load during the game
-#class LoadGame(Action):
-    #def __init__(self):
-        #super().__init__(method = player.loadGame,
-                         #name = "Loads a prior game",
-                         #hotkey = "load",
-                         #)
