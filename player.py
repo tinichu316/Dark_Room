@@ -82,7 +82,7 @@ class Player():
                 self.inventory[3] = 1
                 print("You picked up the key.")
                 #gain sanity for checkpoint pickups.
-                self.sanity += 5
+                self.sanity += 3
                 self.printSanity()
                 currentRoom.item = None
             else:
@@ -91,7 +91,7 @@ class Player():
             if self.inventory[4] == 0:
                 self.inventory[4] = 1
                 print("You picked up the key.")
-                self.sanity += 5
+                self.sanity += 3
                 self.printSanity()
                 currentRoom.item = None
             else:
@@ -100,7 +100,7 @@ class Player():
             if self.inventory[1] == 0:
                 self.inventory[1] = 1
                 print("You feel calmer after placing the trinket in your hand.")
-                self.sanity += 5
+                self.sanity += 3
                 self.printSanity()
                 currentRoom.item = None
             else:
@@ -175,7 +175,7 @@ class Player():
                 print("There's no door here to unlock.\n")
             elif keyType == targetRoom.doorType or keyType == 2:
                 targetRoom.unlock()
-                self.sanity += 5
+                self.sanity += 3
             else:
                 print("That key doesn't fit here.\n")
 
