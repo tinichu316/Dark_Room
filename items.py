@@ -68,14 +68,27 @@ class IntroNote(Item):
         self.isFirstTime = True
         super().__init__(index = 0,
                          name = "A crumpled note",
-                         description = "It reads: I've been waiting for you, %s." %self.playerName,
+                         description = "It reads: Dear %s..." %self.playerName,
                          )
         
     def useByPlayer(self, player):
         if self.isFirstTime:
             player.sanity += self.sanityAmt
             self.isFirstTime = False
-            print("You touch the note and a chill goes up your spine. \nYour sanity has decreased.")
+            print("""You touch the note and a chill goes up your spine.
+It reads:
+
+ █     █░ ▄▄▄       ██ ▄█▀▓█████     █    ██  ██▓███
+▓█░ █ ░█░▒████▄     ██▄█▒ ▓█   ▀     ██  ▓██▒▓██░  ██▒
+▒█░ █ ░█ ▒██  ▀█▄  ▓███▄░ ▒███      ▓██  ▒██░▓██░ ██▓▒
+░█░ █ ░█ ░██▄▄▄▄██ ▓██ █▄ ▒▓█  ▄    ▓▓█  ░██░▒██▄█▓▒ ▒
+░░██▒██▓  ▓█   ▓██▒▒██▒ █▄░▒████▒   ▒▒█████▓ ▒██▒ ░  ░
+░ ▓░▒ ▒   ▒▒   ▓▒█░▒ ▒▒ ▓▒░░ ▒░ ░   ░▒▓▒ ▒ ▒ ▒▓▒░ ░  ░
+  ▒ ░ ░    ▒   ▒▒ ░░ ░▒ ▒░ ░ ░  ░   ░░▒░ ░ ░ ░▒ ░
+  ░   ░    ░   ▒   ░ ░░ ░    ░       ░░░ ░ ░ ░░
+    ░          ░  ░░  ░      ░  ░      ░
+                                             
+Your sanity has decreased.""")
 
             #weird.. prints out 'None' after..
     
@@ -86,7 +99,7 @@ class Trinket(Item):
         self.sanityAmt = 20
         self.isFirstTime = True
         super().__init__(index = 1,
-                         name = "Trinket", 
+                         name = "A Trinket",
                          description = "A sentimental token that reminds you of home."
                          )
         

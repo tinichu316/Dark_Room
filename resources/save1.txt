@@ -1,4 +1,4 @@
-playerName: 'tony'
+playerName: 'iojsadfoiaj'
 room: [3, 3]
 inventory: [1, 0, 0, 0, 0]
-sanity: 76
+sanity: 99

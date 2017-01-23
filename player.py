@@ -10,13 +10,21 @@ spookyQuotes = [
 "Give in, to your fear.",
 "Hope is an illusion.",
 "Caress your fear.",
-"You have already lost.",
+"The mitochondria is the powerhouse of the cell.",
+"I always lie."
 "Death... is close.",
-"You are already dead.",
+"Who do the VooDoo?",
+"Your sanity has decreased by 60 points."
 "Your courage will fail.",
+"Honey, wake up! You're going to be late for school!"
 "You are weak.",
 "Your heart will explode.",
-"No one will remember you."
+"No one will remember you.",
+"Karen, Where's my report?",
+"One eighteen and one quarter package chocolate cake mix.",
+"Life was so much better back on Pig Beach.",
+"Just who the hell do you think we are?",
+"Apples. Oranges. Pears. Plums. Kumquats. Lemons. Limes. Avocado. Tomato. Banana. Papaya."
 ]
 
 def displaySanity(percent):
@@ -40,10 +48,7 @@ def displaySanity(percent):
     health = "".join(bar)
     
     print("\nSanity: [" + health + "] (%s%%)        You%s" %(percent, responses[resp]))
-    
 
-    
-    
 class Player():
     # place commands here.
     def __init__(self):
@@ -80,7 +85,7 @@ class Player():
         elif whichItem == "key" and str(currentRoom.item) == str(items.Key1()):
             if self.inventory[3] == 0: #the item is not already picked up
                 self.inventory[3] = 1
-                print("You picked up the key.")
+                print("You picked up the key.\n\nYour sanity has slightly increased.")
                 #gain sanity for checkpoint pickups.
                 self.sanity += 3
                 self.printSanity()
@@ -90,7 +95,7 @@ class Player():
         elif whichItem == "key" and str(currentRoom.item) == str(items.Key2()): #good choice
             if self.inventory[4] == 0:
                 self.inventory[4] = 1
-                print("You picked up the key.")
+                print("You picked up the key.\n\nYour sanity has slightly increased.")
                 self.sanity += 3
                 self.printSanity()
                 currentRoom.item = None

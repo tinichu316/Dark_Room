@@ -114,7 +114,7 @@ Your take lumbering steps before you crash to the ground.
    |______ /(O)\  _________________/____)_`-._\|
 
 
-You awake covered in slime and cockroaches.
+You awake covered in spiderwebs.
 Your sanity has taken a large hit.
     """
         else:
@@ -142,10 +142,13 @@ class Front_Door(MapTile):
         
 class Choice_Room(MapTile):
     def introText(self):
+        #let's place a riddle or puzzle here that will hint at the rooms
         return """
 You enter a room split into North and South directions.
-You have a feeling you will need to go into one room,
-but you also sense that the other room will lead to harm.
+A message scrawled on the wall reads:
+'One of these doors will lead to doom so be careful and pick the right room.
+If the magnetic field lines around the Earth point from North to South,
+which way does a compass point?'
 """
     
     def modifyPlayer(self, player):
@@ -290,7 +293,7 @@ You quickly turn around to leave when you spot something shiny.
           /O \_____
           \__/-="="`
 
-It appears to be a brass key.
+It appears to be a key made of brass.
             """
         else:
             return"""It smells like death and decay in here.
@@ -320,13 +323,12 @@ class Good_Choice(LootRoom):
         self.item = items.Key2()
     def introText(self):
         if self.item:
-            return """
-You appear unharmed.\n
+            return """You appear unharmed.\n
            __
           /@ \_____
           \__/-="="`
 
-You notice in the corner a small golden key.
+You notice in the corner a small key made of gold.
         """
         else:
             return"""

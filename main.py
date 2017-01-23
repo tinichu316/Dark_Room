@@ -5,10 +5,10 @@ from player import Player
 
 #check if saving and loading means people can exploit room.isFirstTime
 
-#do a menu thing that gives 3 options, save, load, newgame. Start the loop after they choose an option.
-
 #how much sanity the player loses per game loop:
 sanityTick = -1
+
+versionNo = 1.03
 
 endings = [
 "Your mind is nearly gone.",
@@ -72,12 +72,13 @@ menuText = """
         | |\ \ (_) | (_) | | | | | |
         \_| \_\___/ \___/|_| |_| |_|
 
+             Version %s
          a Python Adventure game.
              By William Wang\n\n
 type 'load' to load the previous file.
 type 'newgame' to begin a new game (and erase the previous file).
 Type 'exit' to quit the application.
-"""
+""" %(versionNo)
 
 def menuLoop(): #could make the menu a room... nah
     while player.inMenu:
@@ -89,6 +90,11 @@ def menuLoop(): #could make the menu a room... nah
             player.loadGame()
             play()
         if actionInput == "newgame":
+            # ask the player for the name
+            pN = getPlayerName()
+            items.playerName = player.playerName = pN
+            # sets the intro note name to the player's name
+            items.allItems[0] = items.IntroNote(pN)
             play()
 
 
@@ -115,11 +121,7 @@ def score(sanity):
 
 def play():
     world.loadTiles()
-    #ask the player for the name
-    pN = getPlayerName()
-    items.playerName = player.playerName = pN
-    #sets the intro note name to the player's name
-    items.allItems[0] = items.IntroNote(pN)
+
 
     player.inMenu = False
     if player.location == [3,3]: #the starting location
@@ -166,7 +168,7 @@ def play():
 
                     elif actionInput[0] == "usewith":
                         if len(actionInput) == 1:
-                            print("What are you using and with what?")
+                            print("What are you using and with what? Type 'usewith [item] [target]'")
                             break
                         elif len(actionInput) == 2:
                             print("What do you want to use the %s with?" %actionInput[1])
