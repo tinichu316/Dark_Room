@@ -104,7 +104,7 @@ class Player():
         elif whichItem == "trinket" and str(currentRoom.item) == str(items.Trinket()):
             if self.inventory[1] == 0:
                 self.inventory[1] = 1
-                print("You feel calmer after placing the trinket in your hand.\n")
+                print("You feel calmer after placing but not using the trinket in your hand.\n")
                 self.sanity += 5
                 self.printSanity()
                 currentRoom.item = None

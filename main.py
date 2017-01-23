@@ -202,6 +202,8 @@ def play():
         print(victoryScreen)
         print("You have escaped with %s%% sanity." %player.sanity)
         print(score(player.sanity))
+        ans = input("\n[...]: ").lower()
+
 
     #if you died
     if not player.victory and not player.isAlive():
@@ -222,8 +224,9 @@ def play():
                       `'`'`'`---..,___`;.-'
     
                         """)
-        
-        
+        ans = input("\n[...]: ").lower()
+
+
 #at every location it should print out the possible paths.
 
 

@@ -36,7 +36,7 @@ class Key1(Item):
             return "You can't use that here!"
 
     def useByPlayer(self, player):
-        print("Use the key with what? Use 'usewith [item] [target]'")
+        print("Use the key with what? Use 'usewith [item] [target]'\n")
 
 
 class Key2(Item):
@@ -55,7 +55,7 @@ class Key2(Item):
             return "You can't use that here!"
 
     def useByPlayer(self, player):
-        print("Use the key with what? Use 'usewith [item] [target]'")
+        print("Use the key with what? Use 'usewith [item] [target]'\n")
 
 
     
