@@ -11,12 +11,12 @@ spookyQuotes = [
 "Hope is an illusion.",
 "Caress your fear.",
 "The mitochondria is the powerhouse of the cell.",
-"I always lie."
+"I always lie.",
 "Death... is close.",
 "Who do the VooDoo?",
-"Your sanity has decreased by 60 points."
+"Your sanity has decreased by 90 points.",
 "Your courage will fail.",
-"Honey, wake up! You're going to be late for school!"
+"Honey, wake up! You're going to be late for school!",
 "You are weak.",
 "Your heart will explode.",
 "No one will remember you.",
@@ -105,7 +105,7 @@ class Player():
             if self.inventory[1] == 0:
                 self.inventory[1] = 1
                 print("You feel calmer after placing the trinket in your hand.\n")
-                self.sanity += 3
+                self.sanity += 5
                 self.printSanity()
                 currentRoom.item = None
             else:

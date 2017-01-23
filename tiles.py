@@ -143,10 +143,10 @@ class Front_Door(MapTile):
 class Choice_Room(MapTile):
     def introText(self):
         #let's place a riddle or puzzle here that will hint at the rooms
-        return """You enter a room split into North and South directions.
+        return """You enter a room split into 'Up' and 'Down' directions.
 A message scrawled on the wall reads:
-'One of these doors will lead to doom so be careful and pick the right room.
-If the magnetic field lines around the Earth point from North to South,\nwhich way would a compass point?'
+'One of these doors will lead to doom so be careful and pick the right room.'
+Maybe there's a hint written somewhere?
 """
     
     def modifyPlayer(self, player):

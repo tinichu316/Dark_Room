@@ -8,13 +8,13 @@ from player import Player
 #how much sanity the player loses per game loop:
 sanityTick = -1
 
-versionNo = 1.04
+versionNo = 1.05
 
 endings = [
 "Your mind is nearly gone.",
 "You begin to remember your past.",
 "You have a heavy headache but are otherwise fine.",
-"You remain unscathed. You are unstoppable!"
+"You remain unscathed. You are unstoppable!",
 ]
 
 victoryScreen = """You stumble against the wooden door.
@@ -115,7 +115,7 @@ def getPlayerName():
 def score(sanity):
     #selects a certain ending to return based on the player's sanity. 0 = worst.
     ending = sanity//(100//len(endings))
-    return endings[ending-1]
+    return endings[ending]
 
 
 

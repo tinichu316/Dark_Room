@@ -1,5 +1,7 @@
 # Introduction
-'Dark Room' is a text-based adventure game played through the terminal built solely in Python. It was heavily modified from an [online tutorial](http://letstalkdata.com/2014/08/how-to-write-a-text-adventure-in-python/).
+'Dark Room' is a text-based adventure game played through the terminal built solely in Python. The premise is that you are trapped in a maze with no recollection of your past so you must escape into the outside.
+
+It was heavily modified from an [online tutorial](http://letstalkdata.com/2014/08/how-to-write-a-text-adventure-in-python/).
 
 
 The game is intended as a way of learning and practicing programming and as a result will have some badly coded parts that work only for the specific case and is not scalable.
