@@ -87,8 +87,21 @@ It reads:
   ▒ ░ ░    ▒   ▒▒ ░░ ░▒ ▒░ ░ ░  ░   ░░▒░ ░ ░ ░▒ ░
   ░   ░    ░   ▒   ░ ░░ ░    ░       ░░░ ░ ░ ░░
     ░          ░  ░░  ░      ░  ░      ░
-                                             
+
 Your sanity has decreased.""")
+        else:
+            print("""The note reads:
+
+ █     █░ ▄▄▄       ██ ▄█▀▓█████     █    ██  ██▓███
+▓█░ █ ░█░▒████▄     ██▄█▒ ▓█   ▀     ██  ▓██▒▓██░  ██▒
+▒█░ █ ░█ ▒██  ▀█▄  ▓███▄░ ▒███      ▓██  ▒██░▓██░ ██▓▒
+░█░ █ ░█ ░██▄▄▄▄██ ▓██ █▄ ▒▓█  ▄    ▓▓█  ░██░▒██▄█▓▒ ▒
+░░██▒██▓  ▓█   ▓██▒▒██▒ █▄░▒████▒   ▒▒█████▓ ▒██▒ ░  ░
+░ ▓░▒ ▒   ▒▒   ▓▒█░▒ ▒▒ ▓▒░░ ▒░ ░   ░▒▓▒ ▒ ▒ ▒▓▒░ ░  ░
+  ▒ ░ ░    ▒   ▒▒ ░░ ░▒ ▒░ ░ ░  ░   ░░▒░ ░ ░ ░▒ ░
+  ░   ░    ░   ▒   ░ ░░ ░    ░       ░░░ ░ ░ ░░
+    ░          ░  ░░  ░      ░  ░      ░
+            """)
 
             #weird.. prints out 'None' after..
     
@@ -107,7 +120,7 @@ class Trinket(Item):
         if self.isFirstTime:
             player.sanity += self.sanityAmt
             self.isFirstTime = False
-            print("You place the trinket around you neck and feel better protected. \nYour sanity has increased slightly.")
+            print("You place the trinket around your neck and feel better protected. \nYour sanity has increased slightly.")
 
 
 

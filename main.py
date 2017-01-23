@@ -8,7 +8,7 @@ from player import Player
 #how much sanity the player loses per game loop:
 sanityTick = -1
 
-versionNo = 1.03
+versionNo = 1.04
 
 endings = [
 "Your mind is nearly gone.",

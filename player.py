@@ -47,7 +47,7 @@ def displaySanity(percent):
         bar = ["|"]*20
     health = "".join(bar)
     
-    print("\nSanity: [" + health + "] (%s%%)        You%s" %(percent, responses[resp]))
+    print("Sanity: [" + health + "] (%s%%)        You%s\n" %(percent, responses[resp]))
 
 class Player():
     # place commands here.
@@ -85,7 +85,7 @@ class Player():
         elif whichItem == "key" and str(currentRoom.item) == str(items.Key1()):
             if self.inventory[3] == 0: #the item is not already picked up
                 self.inventory[3] = 1
-                print("You picked up the key.\n\nYour sanity has slightly increased.")
+                print("You picked up the key.\n\nYour sanity has slightly increased.\n")
                 #gain sanity for checkpoint pickups.
                 self.sanity += 3
                 self.printSanity()
@@ -95,7 +95,7 @@ class Player():
         elif whichItem == "key" and str(currentRoom.item) == str(items.Key2()): #good choice
             if self.inventory[4] == 0:
                 self.inventory[4] = 1
-                print("You picked up the key.\n\nYour sanity has slightly increased.")
+                print("You picked up the key.\n\nYour sanity has slightly increased.\n")
                 self.sanity += 3
                 self.printSanity()
                 currentRoom.item = None
@@ -104,7 +104,7 @@ class Player():
         elif whichItem == "trinket" and str(currentRoom.item) == str(items.Trinket()):
             if self.inventory[1] == 0:
                 self.inventory[1] = 1
-                print("You feel calmer after placing the trinket in your hand.")
+                print("You feel calmer after placing the trinket in your hand.\n")
                 self.sanity += 3
                 self.printSanity()
                 currentRoom.item = None
